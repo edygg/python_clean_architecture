@@ -1,0 +1,53 @@
+name: CI
+
+# Enable Buildkit and let compose use it to speed up image building
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+on:
+  pull_request:
+    branches: [ "master", "main", "develop" ]
+
+  push:
+    branches: [ "master", "main", "develop" ]
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4.1.0
+        with:
+          python-version: "3.9"
+          cache: pip
+          cache-dependency-path: |
+            requirements/base.txt
+            requirements/local.txt
+      - name: Run pre-commit
+        uses: pre-commit/action@v2.0.3
+
+  pytest:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+
+      - name: Build the Stack
+        run:  docker-compose -f local.yml build
+
+      - name: Run Tests
+        run:  docker-compose -f local.yml run {{cookiecutter.project_name}} pytest
+
+      - name: Tear down the Stack
+        run:  docker-compose -f local.yml down
