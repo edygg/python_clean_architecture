@@ -2,8 +2,10 @@ import injector
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
 from config import settings
+
+from {{cookiecutter.project_name}}.application.unit_of_work import UnitOfWork
+from {{cookiecutter.project_name}}.infrastructure.persistence.unit_of_work import SQLAlchemyUnitOfWork
 
 
 class UnitOfWorkInfrastructure(injector.Module):
@@ -15,7 +17,7 @@ class UnitOfWorkInfrastructure(injector.Module):
     def sql_alchemy_unit_of_work(
         self,
         session_maker: sessionmaker
-    ) -> AbstractUnitOfWork:
+    ) -> UnitOfWork:
         return SQLAlchemyUnitOfWork(session_maker)
 
 

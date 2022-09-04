@@ -23,7 +23,6 @@ class SQLAlchemyUnitOfWork(UnitOfWork):
         #     session=self._session,
         # )
         
-
         return super().__enter__()
 
     def __exit__(self, *args):

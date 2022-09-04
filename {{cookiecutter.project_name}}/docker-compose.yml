@@ -1,0 +1,38 @@
+version: "3"
+
+
+volumes:
+  {{cookiecutter.project_name}}_local_postgres_data: {}
+  {{cookiecutter.project_name}}_local_postgres_data_backups: {}
+
+services:
+  {{cookiecutter.project_name}}:
+    build:
+      context: .
+      dockerfile: ./compose/{{cookiecutter.project_name}}/Dockerfile
+    image: {{cookiecutter.project_name}}_local
+    container_name: {{cookiecutter.project_name}}_local
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.postgres
+    command: /start
+
+  postgres:
+    build:
+      context: .
+      dockerfile: compose/postgres/Dockerfile
+    image: {{cookiecutter.project_name}}_db_local
+    container_name: {{cookiecutter.project_name}}_db_local
+    volumes:
+      - {{cookiecutter.project_name}}_local_postgres_data:/var/lib/postgresql/data:Z
+      - {{cookiecutter.project_name}}_local_postgres_data_backups:/backups:z
+    env_file:
+      - ./.envs/.postgres
+
+  redis:
+    image: redis:7
+    container_name: {{cookiecutter.project_name}}_redis_local

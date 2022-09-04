@@ -1,0 +1,9 @@
+
+# General
+# ------------------------------------------------------------------------------
+redis==4.3.4  # https://github.com/redis/redis-py
+psycopg2cffi==2.9.0  # https://github.com/chtd/psycopg2cffi
+pydantic==1.9.1  # https://github.com/samuelcolvin/pydantic
+SQLAlchemy==1.4.39  # https://docs.sqlalchemy.org/en/14/
+alembic==1.8.1  # https://alembic.sqlalchemy.org/en/latest/tutorial.html
+requests==2.28.1  # https://requests.readthedocs.io/en/latest/
