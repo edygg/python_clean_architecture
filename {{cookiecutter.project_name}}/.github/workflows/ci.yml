@@ -13,9 +13,7 @@ on:
     branches: [ "master", "main", "develop" ]
 
 concurrency:
-  {% raw %}
-  group: ${{ github.head_ref || github.run_id }}
-  {% endraw %}
+  group: {% raw %}${{ github.head_ref || github.run_id }}{% endraw %}
   cancel-in-progress: true
 
 jobs:
