@@ -1,1 +1,1 @@
-from fixtures import database  # noqa: F401
+from tests.fixtures import database  # noqa: F401
